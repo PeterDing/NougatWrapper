@@ -1,0 +1,170 @@
+h1,
+h2,
+h3,
+h4,
+h5 {
+  white-space: pre-wrap;
+}
+p {
+  line-height: inherit;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  break-after: avoid-page;
+  break-inside: avoid;
+  orphans: 4;
+}
+p {
+  orphans: 4;
+}
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.8rem;
+}
+h3 {
+  font-size: 1.6rem;
+}
+h4 {
+  font-size: 1.4rem;
+}
+h5 {
+  font-size: 1.2rem;
+}
+h6 {
+  font-size: 1rem;
+}
+a {
+  cursor: pointer;
+}
+sup.md-footnote {
+  padding: 2px 4px;
+  background-color: rgba(238, 238, 238, 0.7);
+  color: rgb(85, 85, 85);
+  border-radius: 4px;
+  cursor: pointer;
+}
+thead,
+tr {
+  break-inside: avoid;
+  break-after: auto;
+}
+thead {
+  display: table-header-group;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0px;
+  width: 100%;
+  overflow: auto;
+  break-inside: auto;
+  text-align: left;
+}
+li div {
+  padding-top: 0px;
+}
+blockquote {
+  margin: 1rem 0px;
+}
+li p {
+  margin: 0.5rem 0px;
+}
+li blockquote {
+  margin: 1rem 0px;
+}
+li {
+  margin: 0px;
+  position: relative;
+}
+blockquote > :last-child {
+  margin-bottom: 0px;
+}
+blockquote > :first-child,
+li > :first-child {
+  margin-top: 0px;
+}
+a img,
+img a {
+  cursor: pointer;
+}
+p > img:only-child {
+  display: block;
+  margin: auto;
+}
+code,
+pre,
+samp {
+  font-family: var(--monospace);
+}
+kbd {
+  margin: 0px 0.1em;
+  padding: 0.1em 0.6em;
+  font-size: 0.8em;
+  color: rgb(36, 39, 41);
+  background: rgb(255, 255, 255);
+  border: 1px solid rgb(173, 179, 185);
+  border-radius: 3px;
+  box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px,
+    rgb(255, 255, 255) 0px 0px 0px 2px inset;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+code {
+  text-align: left;
+  vertical-align: initial;
+}
+table tr th {
+  border-bottom-width: 0px;
+  border-bottom-style: none;
+  border-bottom-color: currentcolor;
+}
+video {
+  max-width: 100%;
+  display: block;
+  margin: 0px auto;
+}
+iframe {
+  max-width: 100%;
+  width: 100%;
+  border: medium;
+}
+mark {
+  background: rgb(255, 255, 0);
+  color: rgb(0, 0, 0);
+}
+mark strong {
+  color: inherit;
+}
+mark {
+  background: var(--highlight-color);
+  padding: 1px 0.15rem;
+  border-radius: 1px;
+  color: inherit;
+}
+::marker {
+  font-weight: bold;
+  color: var(--marker-color);
+}
+table td {
+  min-width: 32px;
+}
+hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 2px solid #eef2f5;
+  border-radius: 2px;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+  white-space: pre-line;
+}
+
