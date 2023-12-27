@@ -21,7 +21,8 @@ use screencapture::{cut_image, screencapture};
 
 fn main() {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit").accelerator("Cmd+Q");
-    let system_tray_menu = SystemTrayMenu::new().add_item(quit);
+    let dev_tools = CustomMenuItem::new("devtools".to_string(), "DevTools");
+    let system_tray_menu = SystemTrayMenu::new().add_item(quit).add_item(dev_tools);
 
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![screencapture, cut_image])
@@ -46,6 +47,12 @@ fn main() {
                 SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
                     "quit" => {
                         std::process::exit(0);
+                    }
+                    "devtools" => {
+                        let window = app.get_window("main").unwrap();
+                        window.show().unwrap();
+                        window.set_focus().unwrap();
+                        window.open_devtools();
                     }
                     _ => {}
                 },
