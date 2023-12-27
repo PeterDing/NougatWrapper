@@ -83,9 +83,8 @@
         "width": 800,
         "resizable": true,
         "title": "Nougat Wrapper",
-        "visible": false,
-        "hiddenTitle": true,
-        "decorations": false,
+        "visible": true,
+        "decorations": true,
         "focus": false,
         "transparent": false
       }

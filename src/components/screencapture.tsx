@@ -106,6 +106,8 @@ export function ScreenshotWindow() {
       return;
     }
 
+    await appWindow.setDecorations(true);
+
     assert(windowSize !== null);
     const dpi = monitor.scaleFactor;
     await appWindow.setSize(windowSize.toLogical(dpi));

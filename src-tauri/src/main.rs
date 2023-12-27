@@ -1,12 +1,10 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-
 use tauri::{CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu};
 use tauri_plugin_positioner::{Position, WindowExt};
 
 mod screencapture;
-
 use screencapture::{cut_image, screencapture};
 
 // #[tauri::command]
@@ -37,7 +35,7 @@ fn main() {
                 SystemTrayEvent::LeftClick { .. } => {
                     let window = app.get_window("main").unwrap();
                     // use TrayCenter as initial window position
-                    let _ = window.move_window(Position::TrayCenter);
+                    // let _ = window.move_window(Position::TrayCenter);
                     if window.is_visible().unwrap() {
                         window.hide().unwrap();
                     } else {
@@ -59,6 +57,17 @@ fn main() {
                 // detect click outside of the focused window and hide the app
                 if !is_focused {
                     event.window().hide().unwrap();
+                }
+            }
+            tauri::WindowEvent::CloseRequested { api, .. } => {
+                if cfg!(target_os = "macos") {
+                    // on macos, we need to prevent the window from closing
+                    // so that we can hide it instead
+                    api.prevent_close();
+                    event.window().hide().unwrap();
+                } else {
+                    // on other platforms, we can close the window
+                    event.window().close().unwrap();
                 }
             }
             _ => {}
