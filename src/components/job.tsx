@@ -97,7 +97,7 @@ export default function JobDetail() {
   return (
     <div className="flex flex-col">
       <div className="m-3 justify-center items-center">
-        <img className="rounded-md w-2/3 mx-auto" src={thumbnail} />
+        <img className="rounded-md w-5/6 mx-auto" src={thumbnail} />
       </div>
 
       <div
