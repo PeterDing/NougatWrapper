@@ -81,12 +81,7 @@
         "fullscreen": false,
         "height": 600,
         "width": 800,
-        "resizable": true,
-        "title": "Nougat Wrapper",
-        "visible": true,
-        "decorations": true,
-        "focus": false,
-        "transparent": false
+        "title": "Nougat Wrapper"
       }
     ]
   }
