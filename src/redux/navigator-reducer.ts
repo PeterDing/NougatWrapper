@@ -3,11 +3,14 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 export interface INavigatorState {
   currentScreen: string;
   currentJobId: number | null;
+  error: string;
 }
 
 const initialState: INavigatorState = {
-  currentScreen: "job-list", // screencapture, job-list, job-detail, loading, settings
+  // Screens: screencapture, job-list, job-detail, loading, settings, error
+  currentScreen: "job-list",
   currentJobId: null,
+  error: "",
 };
 
 export const navigatorSlice = createSlice({
@@ -24,9 +27,13 @@ export const navigatorSlice = createSlice({
       state.currentScreen = "job-detail";
       state.currentJobId = action.payload;
     },
+    setError: (state, action: PayloadAction<string>) => {
+      state.currentScreen = "error";
+      state.error = action.payload;
+    },
   },
 });
 
-export const { navigate, setCurrentJobId } = navigatorSlice.actions;
+export const { navigate, setCurrentJobId, setError } = navigatorSlice.actions;
 
 export default navigatorSlice.reducer;

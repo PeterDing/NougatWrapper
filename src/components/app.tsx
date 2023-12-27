@@ -5,6 +5,7 @@ import JobDetail from "./job";
 import Loading from "./loading";
 import Settings from "./settings";
 import { ScreenshotWindow } from "./screencapture";
+import ErrorView from "./error";
 import settings from "../database/settings";
 import { navigate } from "../redux/navigator-reducer";
 
@@ -14,6 +15,7 @@ export default function App() {
   const currentScreen = useAppSelector(
     (state) => state.navigator.currentScreen
   );
+  const error = useAppSelector((state) => state.navigator.error);
   if (!nougatServerUrl && currentScreen !== "settings") {
     dispatch(navigate("settings"));
   }
@@ -34,6 +36,8 @@ export default function App() {
       break;
     case "screencapture":
       return <ScreenshotWindow />;
+    case "error":
+      return <ErrorView error={error} />;
   }
 
   return (

@@ -14,7 +14,11 @@ import {
 import { appCommon } from "../common/app";
 import { newJob } from "../database/job";
 import { assert } from "../common/assertion";
-import { navigate, setCurrentJobId } from "../redux/navigator-reducer";
+import {
+  navigate,
+  setCurrentJobId,
+  setError,
+} from "../redux/navigator-reducer";
 import { useAppDispatch } from "../redux/store";
 import { inferenceImage } from "../services/nougat-apis";
 import settings from "../database/settings";
@@ -45,10 +49,18 @@ export function ScreenshotWindow() {
     const ex = await exists(imagePath);
     if (ex) {
       const bytes = await readBinaryFile(imagePath);
-      job.inferenceResult = await inferenceImage(
-        settings.nougatServerUrl,
-        bytes
-      );
+      try {
+        job.inferenceResult = await inferenceImage(
+          settings.nougatServerUrl,
+          bytes
+        );
+      } catch (e) {
+        console.log("----- inference failed", e);
+        dispatch(setError(`Inference server error: ${e}`));
+        removeDefaultImage();
+        return;
+      }
+
       job.status = "completed";
       job.id = await library.addJob(job);
 
