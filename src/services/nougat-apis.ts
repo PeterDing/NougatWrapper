@@ -1,3 +1,4 @@
+import { httpRequest } from "../common/http";
 import { IInferenceResult } from "./result";
 
 export async function inferenceImage(
@@ -13,7 +14,7 @@ export async function inferenceImage(
     "some.png"
   );
 
-  const response = await fetch(url, { body, method: "POST" });
+  const response = await httpRequest(url, { body, method: "POST" }, 30_000);
   const result: IInferenceResult = await response.json();
   return result;
 }
@@ -21,15 +22,10 @@ export async function inferenceImage(
 export async function validateServer(url: string): Promise<boolean> {
   url = new URL("/ok", url).toString();
 
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), 2000);
-
   try {
-    const response = await fetch(url, { signal: controller.signal });
-    clearTimeout(id);
+    const response = await httpRequest(url, undefined, 2000);
     return response.ok;
   } catch (e) {
-    clearTimeout(id);
     return false;
   }
 }
