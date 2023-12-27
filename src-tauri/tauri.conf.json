@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "nougat-wrapper",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "tauri": {
     "allowlist": {
@@ -66,6 +66,7 @@
       }
     },
     "security": {
+      "dangerousUseHttpScheme": true,
       "csp": null
     },
     "updater": {
@@ -81,13 +82,7 @@
         "fullscreen": false,
         "height": 600,
         "width": 800,
-        "resizable": true,
-        "title": "Nougat Wrapper",
-        "visible": false,
-        "hiddenTitle": true,
-        "decorations": false,
-        "focus": false,
-        "transparent": false
+        "title": "Nougat Wrapper"
       }
     ]
   }

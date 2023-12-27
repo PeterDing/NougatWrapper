@@ -24,6 +24,7 @@ import { inferenceImage } from "../services/nougat-apis";
 import settings from "../database/settings";
 import library from "../database/library";
 import { addJob } from "../redux/jobs-reducer";
+import { sleep } from "../common/time";
 
 export function ScreenshotWindow() {
   const dispatch = useAppDispatch();
@@ -57,7 +58,6 @@ export function ScreenshotWindow() {
       } catch (e) {
         console.log("----- inference failed", e);
         dispatch(setError(`Inference server error: ${e}`));
-        removeDefaultImage();
         return;
       }
 
@@ -86,14 +86,12 @@ export function ScreenshotWindow() {
 
     if ((await osType()) === "Darwin") {
       const size = monitor.size;
-      await appWindow.setDecorations(false);
       await appWindow.setSize(size);
     } else {
       await appWindow.setFullscreen(true);
     }
 
     const dpi = monitor.scaleFactor;
-    // appWindow.setPosition(new LogicalPosition(0, 0));
     await appWindow.setPosition(monitor.position.toLogical(dpi));
     await appWindow.setAlwaysOnTop(true);
 
@@ -104,6 +102,15 @@ export function ScreenshotWindow() {
     const monitor = await currentMonitor();
     if (!monitor) {
       return;
+    }
+
+    await appWindow.setResizable(true);
+    await appWindow.setSkipTaskbar(false);
+    await appWindow.setAlwaysOnTop(false);
+    await appWindow.setDecorations(true);
+
+    if ((await osType()) !== "Darwin") {
+      await appWindow.setFullscreen(false);
     }
 
     assert(windowSize !== null);
@@ -136,7 +143,13 @@ export function ScreenshotWindow() {
       const windowSize = await appWindow.outerSize();
       setWindowSize(windowSize);
 
+      await appWindow.setDecorations(false);
       await appWindow.hide();
+
+      if ((await osType()) === "Windows_NT") {
+        // Windows has a bug that the window is not hidden immediately.
+        await sleep(1000);
+      }
 
       const monitorPosition = monitor.position;
       await invoke("screencapture", {
@@ -222,9 +235,9 @@ export function ScreenshotWindow() {
           const width = right - x;
           const height = bottom - y;
           if (width <= 0 || height <= 0) {
-            resizeWindow();
+            await removeDefaultImage();
+            await resizeWindow();
             dispatch(navigate("job-list"));
-            removeDefaultImage();
           } else {
             invoke("cut_image", {
               x,
@@ -233,10 +246,10 @@ export function ScreenshotWindow() {
               height,
               inputPath: defaultImagePath,
               outputPath: imagePath,
-            }).then(() => {
-              resizeWindow();
-              doInferenceImage();
-              removeDefaultImage();
+            }).then(async () => {
+              await removeDefaultImage();
+              await resizeWindow();
+              await doInferenceImage();
             });
           }
         }}

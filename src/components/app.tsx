@@ -8,6 +8,9 @@ import { ScreenshotWindow } from "./screencapture";
 import ErrorView from "./error";
 import settings from "../database/settings";
 import { navigate } from "../redux/navigator-reducer";
+import { appWindow } from "@tauri-apps/api/window";
+
+(window as any).appWindow = appWindow;
 
 export default function App() {
   const dispatch = useAppDispatch();

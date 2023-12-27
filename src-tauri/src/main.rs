@@ -1,12 +1,10 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-
 use tauri::{CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu};
 use tauri_plugin_positioner::{Position, WindowExt};
 
 mod screencapture;
-
 use screencapture::{cut_image, screencapture};
 
 // #[tauri::command]
@@ -23,7 +21,8 @@ use screencapture::{cut_image, screencapture};
 
 fn main() {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit").accelerator("Cmd+Q");
-    let system_tray_menu = SystemTrayMenu::new().add_item(quit);
+    let dev_tools = CustomMenuItem::new("devtools".to_string(), "DevTools");
+    let system_tray_menu = SystemTrayMenu::new().add_item(quit).add_item(dev_tools);
 
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![screencapture, cut_image])
@@ -37,7 +36,7 @@ fn main() {
                 SystemTrayEvent::LeftClick { .. } => {
                     let window = app.get_window("main").unwrap();
                     // use TrayCenter as initial window position
-                    let _ = window.move_window(Position::TrayCenter);
+                    // let _ = window.move_window(Position::TrayCenter);
                     if window.is_visible().unwrap() {
                         window.hide().unwrap();
                     } else {
@@ -49,17 +48,27 @@ fn main() {
                     "quit" => {
                         std::process::exit(0);
                     }
+                    "devtools" => {
+                        let window = app.get_window("main").unwrap();
+                        window.show().unwrap();
+                        window.set_focus().unwrap();
+                        window.open_devtools();
+                    }
                     _ => {}
                 },
                 _ => {}
             }
         })
         .on_window_event(|event| match event.event() {
-            tauri::WindowEvent::Focused(is_focused) => {
-                // detect click outside of the focused window and hide the app
-                if !is_focused {
-                    event.window().hide().unwrap();
-                }
+            // tauri::WindowEvent::Focused(is_focused) => {
+            //     // detect click outside of the focused window and hide the app
+            //     if !is_focused {
+            //         event.window().hide().unwrap();
+            //     }
+            // }
+            tauri::WindowEvent::CloseRequested { api, .. } => {
+                api.prevent_close();
+                event.window().hide().unwrap();
             }
             _ => {}
         })
