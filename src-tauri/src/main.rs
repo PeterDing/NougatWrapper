@@ -28,15 +28,16 @@ fn main() {
         .invoke_handler(tauri::generate_handler![screencapture, cut_image])
         .plugin(tauri_plugin_sql::Builder::default().build())
         .plugin(tauri_plugin_store::Builder::default().build())
-        .plugin(tauri_plugin_positioner::init())
         .system_tray(SystemTray::new().with_menu(system_tray_menu))
         .on_system_tray_event(|app, event| {
-            tauri_plugin_positioner::on_tray_event(app, &event);
+            let window = app.get_window("main").unwrap();
             match event {
                 SystemTrayEvent::LeftClick { .. } => {
-                    let window = app.get_window("main").unwrap();
-                    // use TrayCenter as initial window position
-                    // let _ = window.move_window(Position::TrayCenter);
+                    println!(
+                        "left click: is_visible: {:?}, is_minimized: {:?}",
+                        window.is_visible().unwrap(),
+                        window.is_minimized().unwrap()
+                    );
                     if window.is_visible().unwrap() {
                         window.hide().unwrap();
                     } else {
