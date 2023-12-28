@@ -19,6 +19,7 @@ use screencapture::{cut_image, screencapture};
 // }
 
 fn main() {
+    let show = CustomMenuItem::new("show".to_string(), "Show");
     let quit = CustomMenuItem::new("quit".to_string(), "Quit").accelerator("Cmd+Q");
     let dev_tools = CustomMenuItem::new("devtools".to_string(), "DevTools");
     let system_tray_menu = SystemTrayMenu::new().add_item(quit).add_item(dev_tools);
@@ -45,6 +46,11 @@ fn main() {
                     }
                 }
                 SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
+                    "show" => {
+                        let window = app.get_window("main").unwrap();
+                        window.show().unwrap();
+                        window.set_focus().unwrap();
+                    }
                     "quit" => {
                         std::process::exit(0);
                     }
