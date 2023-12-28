@@ -2,7 +2,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use tauri::{CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu};
-use tauri_plugin_positioner::{Position, WindowExt};
 
 mod screencapture;
 use screencapture::{cut_image, screencapture};
