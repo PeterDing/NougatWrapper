@@ -146,8 +146,8 @@ export function ScreenshotWindow() {
       await appWindow.setDecorations(false);
       await appWindow.hide();
 
-      if ((await osType()) === "Windows_NT") {
-        // Windows has a bug that the window is not hidden immediately.
+      if ((await osType()) !== "Darwin") {
+        // Windows and Linux has a bug that the window is not hidden immediately.
         await sleep(1000);
       }
 
