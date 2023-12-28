@@ -22,7 +22,10 @@ fn main() {
     let show = CustomMenuItem::new("show".to_string(), "Show");
     let quit = CustomMenuItem::new("quit".to_string(), "Quit").accelerator("Cmd+Q");
     let dev_tools = CustomMenuItem::new("devtools".to_string(), "DevTools");
-    let system_tray_menu = SystemTrayMenu::new().add_item(quit).add_item(dev_tools);
+    let system_tray_menu = SystemTrayMenu::new()
+        .add_item(show)
+        .add_item(quit)
+        .add_item(dev_tools);
 
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![screencapture, cut_image])
