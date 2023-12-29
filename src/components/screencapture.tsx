@@ -93,7 +93,7 @@ export function ScreenshotWindow() {
 
     const dpi = monitor.scaleFactor;
     await appWindow.setPosition(monitor.position.toLogical(dpi));
-    await appWindow.setAlwaysOnTop(true);
+    // await appWindow.setAlwaysOnTop(true);
 
     await appWindow.show();
   }
@@ -106,7 +106,7 @@ export function ScreenshotWindow() {
 
     await appWindow.setResizable(true);
     await appWindow.setSkipTaskbar(false);
-    await appWindow.setAlwaysOnTop(false);
+    // await appWindow.setAlwaysOnTop(false);
     await appWindow.setDecorations(true);
 
     if ((await osType()) !== "Darwin") {
@@ -148,7 +148,7 @@ export function ScreenshotWindow() {
 
       if ((await osType()) !== "Darwin") {
         // Windows and Linux has a bug that the window is not hidden immediately.
-        await sleep(1000);
+        await sleep(500);
       }
 
       const monitorPosition = monitor.position;

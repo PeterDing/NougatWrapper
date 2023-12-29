@@ -36,11 +36,6 @@ fn main() {
             let window = app.get_window("main").unwrap();
             match event {
                 SystemTrayEvent::LeftClick { .. } => {
-                    println!(
-                        "left click: is_visible: {:?}, is_minimized: {:?}",
-                        window.is_visible().unwrap(),
-                        window.is_minimized().unwrap()
-                    );
                     if window.is_visible().unwrap() {
                         window.hide().unwrap();
                     } else {

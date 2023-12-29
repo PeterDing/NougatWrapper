@@ -95,9 +95,9 @@ export default function JobDetail() {
   }, [output]);
 
   return (
-    <div className="flex flex-col">
-      <div className="m-3 justify-center items-center">
-        <img className="rounded-md w-5/6 mx-auto" src={thumbnail} />
+    <div>
+      <div className="mx-auto justify-center items-center">
+        <img className="mx-auto" src={thumbnail} />
       </div>
 
       <div
