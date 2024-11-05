@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { exists, removeFile } from "@tauri-apps/api/fs";
+import { exists, remove } from "@tauri-apps/plugin-fs";
 
 import { assert } from "../common/assertion";
 import library from "../database/library";
@@ -111,7 +111,7 @@ export function DeleteOneJob({ callBack }: { callBack: () => void }) {
 
     // Remove job image file
     const ex = await exists(imagePath);
-    if (ex) await removeFile(imagePath);
+    if (ex) await remove(imagePath);
   };
 
   return <DeleteView message={message} action={action} callBack={callBack} />;
@@ -139,7 +139,7 @@ export function DeleteAllJobs({ callBack }: { callBack: () => void }) {
     // Remove job images' files
     for (const imagePath of imagePaths) {
       const ex = await exists(imagePath);
-      if (ex) await removeFile(imagePath);
+      if (ex) await remove(imagePath);
     }
   };
 

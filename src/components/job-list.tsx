@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { convertFileSrc } from "@tauri-apps/api/tauri";
+import { convertFileSrc } from "@tauri-apps/api/core";
 
 import { appCommon } from "../common/app";
 import { getLocalDateString } from "../common/time";

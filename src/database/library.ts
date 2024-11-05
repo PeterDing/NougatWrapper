@@ -1,14 +1,13 @@
-import Database from "tauri-plugin-sql-api";
+import Database from "@tauri-apps/plugin-sql";
 import { JobTableSql } from "./tables";
 import { IJob } from "./job";
 
 const dbPath = "sqlite:library.sqlite";
 
 class Library {
-  private db: Database;
+  private db!: Database;
 
   constructor() {
-    this.db = new Database(dbPath);
     this.init();
   }
 

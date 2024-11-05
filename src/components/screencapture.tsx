@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
-import { exists, readBinaryFile, removeFile } from "@tauri-apps/api/fs";
-import { type as osType } from "@tauri-apps/api/os";
-import { invoke, convertFileSrc } from "@tauri-apps/api/tauri";
+import { exists, readFile, remove } from "@tauri-apps/plugin-fs";
+import { platform } from "@tauri-apps/plugin-os";
+import { invoke, convertFileSrc } from "@tauri-apps/api/core";
 import {
   // LogicalPosition,
   PhysicalPosition,
   PhysicalSize,
-  appWindow,
+  getCurrentWindow,
   currentMonitor,
 } from "@tauri-apps/api/window";
 
@@ -49,7 +49,7 @@ export function ScreenshotWindow() {
     dispatch(navigate("loading"));
     const ex = await exists(imagePath);
     if (ex) {
-      const bytes = await readBinaryFile(imagePath);
+      const bytes = await readFile(imagePath);
       try {
         job.inferenceResult = await inferenceImage(
           settings.nougatServerUrl,
@@ -80,11 +80,13 @@ export function ScreenshotWindow() {
       return;
     }
 
+    const appWindow = getCurrentWindow();
+
     appWindow.setFocus();
     await appWindow.setResizable(false);
     await appWindow.setSkipTaskbar(true);
 
-    if ((await osType()) === "Darwin") {
+    if (platform() === "macos") {
       const size = monitor.size;
       await appWindow.setSize(size);
     } else {
@@ -104,12 +106,14 @@ export function ScreenshotWindow() {
       return;
     }
 
+    const appWindow = getCurrentWindow();
+
     await appWindow.setResizable(true);
     await appWindow.setSkipTaskbar(false);
     // await appWindow.setAlwaysOnTop(false);
     await appWindow.setDecorations(true);
 
-    if ((await osType()) !== "Darwin") {
+    if (platform() === "macos") {
       await appWindow.setFullscreen(false);
     }
 
@@ -124,7 +128,7 @@ export function ScreenshotWindow() {
 
   async function removeDefaultImage() {
     if (await exists(defaultImagePath)) {
-      await removeFile(defaultImagePath);
+      await remove(defaultImagePath);
     }
   }
 
@@ -137,6 +141,8 @@ export function ScreenshotWindow() {
 
       await removeDefaultImage();
 
+      const appWindow = getCurrentWindow();
+
       const windowPosition = await appWindow.outerPosition();
       setPosition(windowPosition);
 
@@ -146,7 +152,7 @@ export function ScreenshotWindow() {
       await appWindow.setDecorations(false);
       await appWindow.hide();
 
-      if ((await osType()) !== "Darwin") {
+      if (platform() === "macos") {
         // Windows and Linux has a bug that the window is not hidden immediately.
         await sleep(500);
       }

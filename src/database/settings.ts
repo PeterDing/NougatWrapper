@@ -1,25 +1,25 @@
-import { Store } from "tauri-plugin-store-api";
+import { Store, load } from "@tauri-apps/plugin-store";
 
 const storePath = "settings.dat"; // $APPLOCALDATA/settings.dat
 
 class AppSettings {
-  private store: Store;
+  private store!: Store;
 
   public nougatServerUrl: string;
   public static nougatServerUrlKey: string = "nougat-server-url";
 
   constructor() {
-    this.store = new Store(storePath);
     this.nougatServerUrl = "";
     this.init();
   }
 
   private async init() {
+    this.store = await load(storePath);
     this.nougatServerUrl = (await this.get("nougat-server-url")) ?? "";
   }
 
   public async get(key: string): Promise<string | null> {
-    return await this.store.get(key);
+    return (await this.store.get(key)) || null;
   }
 
   public async set(key: string, value: unknown) {
